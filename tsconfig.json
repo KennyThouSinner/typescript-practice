@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "skipLibCheck": true,
+        "strictNullChecks": false,
+        "target": "es2017",
+        "removeComments": true,
+        "noImplicitThis": true,
+        "inlineSourceMap": true,
+        "moduleResolution": "node",
+        "outDir": "src/bot/javascript"
+    },
+    "include": [
+        "src/bot/typescript/", 
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+}

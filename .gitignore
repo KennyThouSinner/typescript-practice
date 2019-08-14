@@ -1,0 +1,10 @@
+node_modules
+package-lock.json
+package.json
+.vscode
+.idea
+.vs
+src/bot/typescript/configurations.ts
+src/bot/javascript/
+.env
+src/con.js
