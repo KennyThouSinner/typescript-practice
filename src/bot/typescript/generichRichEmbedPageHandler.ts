@@ -75,4 +75,37 @@ export class GenericMessageEmbedPageHandler<T> {
             // Update the message
             this.message.edit(this.embed);
       }
+
+      public async startCollecting(authorId: string, sent: Message, ) {
+            this.showPage();
+
+            await sent.react("◀")
+            await sent.react("▶")
+            await sent.react("❌")
+
+            const filter = (reaction, user) => (reaction.emoji.name === "◀" || reaction.emoji.name === "▶" || reaction.emoji.name === "❌") && user.id === authorId
+            const collector = sent.createReactionCollector(filter);
+
+            collector.on("collect", r => {
+
+                  if (r.emoji.name === "◀") {
+                        this.PreviousPage();
+                  } else if (r.emoji.name === "▶") {
+                        this.NextPage();
+                  } else if (r.emoji.name === "❌") {
+                        this.message.delete();
+                  }
+
+                  r.users.filter(user => !user.bot).forEach(user => {
+                        r.users.remove(user);
+                  })
+            });
+
+            collector.on("end", collected => {
+
+                  let first = collected.first();
+                  if (first) first.message.delete();
+
+            })
+      }
 }
