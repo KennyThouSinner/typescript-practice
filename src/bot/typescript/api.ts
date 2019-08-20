@@ -5,5 +5,7 @@ export interface IBotCommand {
     help(): string;
     isThisCommand(command: string): boolean;
     usage(): string;
+    adminOnly(): boolean;
+    devOnly(): boolean;
     runCommand(args: string[], message: Discord.Message, client: Discord.Client): Promise<void>;
 }
