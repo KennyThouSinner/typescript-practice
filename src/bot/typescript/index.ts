@@ -7,21 +7,28 @@ import { Model, model } from "mongoose";
 import Balance, { BalanceModel } from "./assets/mongoose/schemas/balance";
 import * as fs from "fs";
 import * as chalk from "chalk";
+import { Member } from "./classes/member";
+import { bot } from "./custom/customevents";
+import { loader } from "./classes/loader";
 
 mongoose.connect("mongodb://localhost:27017/typescript", { useNewUrlParser: true });
 
-const client: Client = new Client();
+export const client: Client = new Client();
 
 const commands: IBotCommand[] = [];
+
+const guild = new Guild(client, {});
+
+export const member = new Member(client, {}, guild);
 
 export let cmds = {
     commands: commands
 };
 
-loadAdmin(`${__dirname}/commands/admin`);
-loadMod(`${__dirname}/commands/mod`);
-loadEco(`${__dirname}/commands/eco`);
-loadUtil(`${__dirname}/commands/util`);
+new loader().loadAdmin(`${__dirname}/commands/admin`);
+new loader().loadMod(`${__dirname}/commands/mod`);
+new loader().loadEco(`${__dirname}/commands/eco`);
+new loader().loadUtil(`${__dirname}/commands/util`);
 
 client.on("ready", async () => {
     console.log(chalk.default.green(`Logged in as ${client.user.tag}`));
@@ -78,7 +85,7 @@ client.on("message", message => {
                     balance: moneyToGive
                 }).save().catch(e => console.log(e));
             } else {
-                bal.balance += moneyToGive //bal.balance = bal.balance + moneyToGive
+                bal.balance += moneyToGive
                 bal.save().catch(e => console.log(e));
             }
             if (!message.content.toLowerCase().startsWith(conf.prefix) || message.content.slice(conf.prefix.length).length <= 0) { return; }
@@ -103,62 +110,6 @@ async function handleCommand(message: Message) {
         } catch (e) {
             console.log(e);
         }
-    }
-}
-
-function loadAdmin(commandsPath: string) {
-
-    if (!config || (config.commands.admin as string[]).length === 0) { return; }
-
-    for (const cmdName of config.commands.admin as string[]) {
-
-        const cmdclass = require(`${commandsPath}/${cmdName}`).default;
-
-        const cmd = new cmdclass() as IBotCommand;
-
-        commands.push(cmd);
-    }
-}
-
-function loadMod(commandsPath: string) {
-
-    if (!config || (config.commands.mod as string[]).length === 0) { return; }
-
-    for (const cmdName of config.commands.mod as string[]) {
-
-        const cmdclass = require(`${commandsPath}/${cmdName}`).default;
-
-        const cmd = new cmdclass() as IBotCommand;
-
-        commands.push(cmd);
-    }
-}
-
-function loadEco(commandsPath: string) {
-
-    if (!config || (config.commands.eco as string[]).length === 0) { return; }
-
-    for (const cmdName of config.commands.eco as string[]) {
-
-        const cmdclass = require(`${commandsPath}/${cmdName}`).default;
-
-        const cmd = new cmdclass() as IBotCommand;
-
-        commands.push(cmd);
-    }
-}
-
-function loadUtil(commandsPath: string) {
-
-    if (!config || (config.commands.util as string[]).length === 0) { return; }
-
-    for (const cmdName of config.commands.util as string[]) {
-
-        const cmdclass = require(`${commandsPath}/${cmdName}`).default;
-
-        const cmd = new cmdclass() as IBotCommand;
-
-        commands.push(cmd);
     }
 }
 
