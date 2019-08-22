@@ -1,64 +1,25 @@
 import { config } from "../config";
-import { cmds } from "../index";
+import { commands } from "../index";
 import { IBotCommand } from "../api";
 
 class loader {
 
-    async loadAdmin(commandsPath: string) {
+    async loadCmds(path: string) {
 
-        if (!config || (config.commands.admin as string[]).length === 0) { return; }
+        if (!config || Object.keys(config.commands).length <= 0) { return; }
 
-        for (const cmdName of config.commands.admin as string[]) {
+        let z = 0;
 
-            const cmdclass = require(`${commandsPath}/${cmdName}`).default;
+        for (let i of Object.keys(config.commands)) {
 
-            const cmd = new cmdclass() as IBotCommand;
-
-            cmds.commands.push(cmd);
-        }
-    }
-
-    async loadMod(commandsPath: string) {
-
-        if (!config || (config.commands.mod as string[]).length === 0) { return; }
-
-        for (const cmdName of config.commands.mod as string[]) {
-
-            const cmdclass = require(`${commandsPath}/${cmdName}`).default;
+            const cmdclass = require(`${path}/${i}/${(config.commands[i])[z]}`).default;
 
             const cmd = new cmdclass() as IBotCommand;
-
-            cmds.commands.push(cmd);
-        }
-    }
-
-    async loadEco(commandsPath: string) {
-
-        if (!config || (config.commands.eco as string[]).length === 0) { return; }
-
-        for (const cmdName of config.commands.eco as string[]) {
-
-            const cmdclass = require(`${commandsPath}/${cmdName}`).default;
-
-            const cmd = new cmdclass() as IBotCommand;
-
-            cmds.commands.push(cmd);
-        }
-    }
-
-    async loadUtil(commandsPath: string) {
-
-        if (!config || (config.commands.util as string[]).length === 0) { return; }
-
-        for (const cmdName of config.commands.util as string[]) {
-
-            const cmdclass = require(`${commandsPath}/${cmdName}`).default;
-
-            const cmd = new cmdclass() as IBotCommand;
-
-            cmds.commands.push(cmd);
-        }
-    }
-}
+            
+            commands.push(cmd);
+        };
+        z++
+    };
+};
 
 export { loader };
