@@ -18,6 +18,14 @@ export default class serverinfo implements IBotCommand {
             return "?serverinfo";
       }
 
+      adminOnly(): boolean {
+            return false;
+      }
+
+      devOnly(): boolean {
+            return false;
+      }
+
       async runCommand(args: string[], message: Message, client: Client): Promise<void> {
 
             const guild = message.guild;

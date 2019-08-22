@@ -1,10 +1,10 @@
 import { Message, Client, MessageEmbed } from "discord.js";
 import { IBotCommand } from "../../api";
-import { Member } from "../../class/member";
+import { Member } from "../../classes/member";
 
-export default class tempban implements IBotCommand {
+export default class softban implements IBotCommand {
 
-      private readonly _command = "tempban";
+      private readonly _command = "softban";
 
       help(): string {
             return "This command does nothing";
@@ -15,8 +15,16 @@ export default class tempban implements IBotCommand {
       };
 
       usage(): string {
-            return "?tempban @member [days] [reason]";
+            return "?softban @member [days] [reason]";
       };
+
+      adminOnly(): boolean {
+            return true;
+      }
+
+      devOnly(): boolean {
+            return false;
+      }
 
       async runCommand(args: string[], message: Message, client: Client): Promise<void> {
 
@@ -27,14 +35,14 @@ export default class tempban implements IBotCommand {
                   return;
             }
 
-            if (!mentionedMember) {
+            if (!mentionedMember && args[0]) {
                   message.channel.send("You must either mention a member or supply a member ID");
                   return;
             }
-
+            
             new Member(client, {}, message.guild)
-                  .tempban({ id: mentionedMember.id }).then(es => {
-                        message.channel.send(`Successfully banned ${mentionedMember.user.tag} from ${message.guild.name}. Removed messages that are ${es} day(s) old`)
+                  .softban({ id: mentionedMember.id }).then(es => {
+                        message.channel.send(`Successfully soft-banned ${mentionedMember.user.tag} from ${message.guild.name}. Removed messages that are ${es} day(s) old`)
                         console.log(es);
                   })
       };

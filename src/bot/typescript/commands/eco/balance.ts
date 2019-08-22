@@ -18,6 +18,14 @@ export default class balance implements IBotCommand {
             return "?balance @member";
       }
 
+      adminOnly(): boolean {
+            return false;
+      }
+
+      devOnly(): boolean {
+            return false;
+      }
+
       async runCommand(args: string[], message: Message, client: Client): Promise<void> {
 
             const member = message.mentions.members.first() || await message.guild.members.fetch(args[0]);

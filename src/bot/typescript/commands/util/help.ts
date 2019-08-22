@@ -1,6 +1,6 @@
 import { Message, Client, MessageEmbed } from "discord.js";
 import { IBotCommand } from "../../api";
-import { cmds } from "../../index";
+import { commands } from "../../index";
 import { GenericMessageEmbedPageHandler } from "../../generichRichEmbedPageHandler";
 
 export default class help implements IBotCommand {
@@ -48,7 +48,7 @@ export default class help implements IBotCommand {
             return embed;
         }
 
-        let handler = new GenericMessageEmbedPageHandler<IBotCommand>(cmds.commands, 5, itemHandler, embed, sent as Message)
+        let handler = new GenericMessageEmbedPageHandler<IBotCommand>(commands, 5, itemHandler, embed, sent as Message)
 
         handler.startCollecting(message.author.id, sent);
     };

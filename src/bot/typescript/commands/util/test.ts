@@ -1,5 +1,6 @@
-import { Message, Client, MessageEmbed } from "discord.js";
+import { Message, Client, MessageEmbed, DiscordAPIError } from "discord.js";
 import { IBotCommand } from "../../api";
+import { isObject, isString } from "util";
 
 export default class test implements IBotCommand {
 
@@ -17,11 +18,23 @@ export default class test implements IBotCommand {
         return "?test";
     };
 
+    adminOnly(): boolean {
+        return false;
+    }
+
+    devOnly(): boolean {
+        return false;
+    }
+
     async runCommand(args: string[], message: Message, client: Client): Promise<void> {
 
-        message.guild.fetchAuditLogs().then(logs => {
-            message.channel.send(logs.entries.first(), { code: "json" });
-            console.log(logs.entries.first().toJSON());
-        })
+        const array = ["603096765490790412", "603044257632354307"];
+
+        if(array.some(r => message.member.roles.has(r))) { 
+            console.log("true");
+        } else { 
+            console.log("false");
+        }
+
     };
 };

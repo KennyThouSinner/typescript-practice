@@ -1,8 +1,9 @@
-import { Message, Client, MessageEmbed } from "discord.js";
+import { Message, Client, MessageEmbed, GuildMemberRoleStore } from "discord.js";
 import { IBotCommand } from "../../api";
 import Mute, { MuteModel } from "../../assets/mongoose/schemas/warns";
 import { makeid } from "../../gen";
 import punishment, { punishmentModel } from "../../assets/mongoose/schemas/punishments";
+import Roles, { RolesModel } from "../../assets/mongoose/schemas/roles";
 
 export default class mute implements IBotCommand {
 
@@ -20,81 +21,104 @@ export default class mute implements IBotCommand {
         return "?mute @member [reason]";
     }
 
+    adminOnly(): boolean {
+        return undefined;
+    }
+
+    devOnly(): boolean {
+        return false;
+    }
+
     async runCommand(args: string[], message: Message, client: Client): Promise<void> {
 
-        const member = message.mentions.members.first();
-        const reason = args.slice(1).join(" ").toString() || "No reason specified";
-        const muterole = message.guild.roles.find(role => role.name.toLowerCase() === "muted" || role.name.toLowerCase().includes("muted"));
-        const retValue = makeid(17);
-        const muteEmbed = new MessageEmbed();
-        const punishments = await punishment.findOne({
-            ID: retValue
-        });
+        const member = message.mentions.members.first() || await message.guild.members.fetch(args[0]);
+        const muterole = message.guild.roles.find(role => role.name.toLowerCase() === "muted" || role.name.toLowerCase().includes("mute"))
+        const muteEmbed = new MessageEmbed().setFooter(message.guild.me.displayName, client.user.displayAvatarURL())
 
-        if (!message.member.permissions.has("MANAGE_ROLES")) {
-            message.channel.send("Insufficient Permission.");
+        if (!message.member.permissions.has("MANAGE_MESSAGES")) {
+            message.channel.send(`You do not have enough authorization to do this`);
             return;
         }
 
-        if (!message.mentions.members.first()) {
-            message.channel.send(`Please specify a member to mute.`)
+        if (!message.guild.me.permissions.has("MANAGE_ROLES")) {
+            message.channel.send(`Error: **${client.user.username}** does not have the 'MANAGE_ROLES' permission`);
             return;
         }
 
-        if (!message.guild.members.fetch(member.id)) {
-            message.channel.send(`That member is not inside of this guild.`)
+        if (!args[0] && !member) {
+            message.channel.send("Please mention a member or provide a member ID");
             return;
         }
 
-        if (!muterole) {
-            message.guild.roles.create({
-                "data": {
-                    "name": "Muted",
-                    "permissions": 0,
-                    "position": 0
-                },
-                "reason": "No muted role was found inside of the guild"
-            }).then(role => {
-                message.guild.members.fetch(member.id).then(member => member.roles.add(role));
-            }).catch(ex => { console.log(ex); message.channel.send("Cannot create 'Muted' role. Missing permissions.") })
-        } else {
-            message.guild.members.fetch(member.id).then(member => member.roles.add(muterole)).catch(e => { console.log(e); message.channel.send(`Unable to add the role to the specified member. Missing permissions.`) })
+        if (args[1] && isNaN(parseInt(args[0]))) {
+            message.channel.send(`Please provide an ID that is a number.`);
+            return;
         }
 
-        await Mute.findOne({
-            guildID: message.guild.id,
-            userID: member.id
-        }, (err, warns) => {
+        if (member.roles.has(muterole.id)) {
+            message.channel.send(`This member is already muted.`);
+            return;
+        }
 
-            if (!punishments) {
-                muteEmbed.addField("Punishment ID", retValue)
-            }
-            muteEmbed.setColor("WHITE")
-            muteEmbed.setAuthor(member.displayName, member.user.displayAvatarURL())
-            muteEmbed.addField(`Punishment for ${member.user.tag} was updated`, "Action: Mute")
-            muteEmbed.addField(`Reason for action`, reason)
-            muteEmbed.setFooter(`Action ran by ${message.member.displayName}`, message.author.displayAvatarURL())
-            muteEmbed.setTimestamp();
-
+        Roles.findOne({
+            guild: message.guild.id,
+            member: member.id
+        }, (err, roles) => {
             if (err) return console.log(err);
 
-            if (!warns) {
-                return new Mute({
-                    guildID: message.guild.id,
-                    userID: member.id,
-                    reason: reason,
-                    punishment: retValue
-                }).save().catch(e => console.log(e));
+            if (!isNaN(parseInt(args[1]))) {
+
+                let reason = args.slice(2).join(" ") || "No reason specified";
+
+                muteEmbed
+                    .addField("Muted", member.displayName)
+                    .addField("Action by", message.member.displayName)
+                    .addField("Muted for", args[1] + " milliseconds")
+                    .addField("Reason", reason);
+
+                if (!roles) {
+                    new Roles({
+                        guild: message.guild.id,
+                        member: member.id,
+                        roles: member.roles.keyArray()
+                    }).save().catch(e => console.log(e));
+                } else {
+                    roles.roles = member.roles.keyArray();
+                    roles.save().catch(e => console.log(e));
+                }
+
+                member.roles.set([muterole.id]).then(role => {
+                    message.channel.send(muteEmbed);
+                    setTimeout(function () {
+                        member.roles.set(roles.roles);
+                        message.channel.send(`Successfully unmuted ${member.displayName}`)
+                    }, parseInt(args[1]));
+                });
+
             } else {
-                return new Mute({
-                    guildID: message.guild.id,
-                    userID: member.id,
-                    reason: reason,
-                    punishment: retValue
-                }).save().catch(e => console.log(e));
+
+                let reason = args.slice(1).join(" ") || "No reason specified";
+
+                muteEmbed
+                    .addField("Muted", member.displayName)
+                    .addField("Action by", message.member.displayName)
+                    .addField("Reason", reason);
+
+                if (!roles) {
+                    new Roles({
+                        guild: message.guild.id,
+                        member: member.id,
+                        roles: member.roles.keyArray()
+                    }).save().catch(e => console.log(e));
+                } else {
+                    roles.roles = member.roles.keyArray();
+                    roles.save().catch(e => console.log(e));
+                }
+
+                member.roles.set([muterole.id]).then(role => {
+                    message.channel.send(muteEmbed);
+                });
             }
-        }).then(() => {
-            message.channel.send(muteEmbed);
         })
     }
 }

@@ -18,6 +18,14 @@ export default class unmute implements IBotCommand {
         return "?unmute @member";
     }
 
+    adminOnly(): boolean {
+        return undefined;
+    }
+
+    devOnly(): boolean {
+        return false;
+    }
+
     async runCommand(args: string[], message: Message, client: Client): Promise<void> {
 
         const member = message.mentions.members.first();

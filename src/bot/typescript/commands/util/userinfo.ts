@@ -18,6 +18,14 @@ export default class userinfo implements IBotCommand {
             return "?userinfo @user";
       }
 
+      adminOnly(): boolean {
+            return false;
+      }
+
+      devOnly(): boolean {
+            return false;
+      }
+
       async runCommand(args: string[], message: Message, client: Client): Promise<void> {
 
             const user = message.mentions.users.first() || await client.users.fetch(args[0]) || message.author;

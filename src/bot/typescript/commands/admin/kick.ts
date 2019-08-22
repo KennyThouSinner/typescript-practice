@@ -17,6 +17,14 @@ export default class kick implements IBotCommand {
         return "?kick @member [reason]";
     }
 
+    adminOnly(): boolean {
+        return true;
+    }
+
+    devOnly(): boolean {
+        return false;
+    }
+
     async runCommand(args: string[], message: Message, client: Client): Promise<void> {
 
         const member = await message.guild.members.fetch(message.mentions.members.first() || message.guild.members.get(args[0]));

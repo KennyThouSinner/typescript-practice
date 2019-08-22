@@ -20,6 +20,14 @@ export default class tempmute implements IBotCommand {
             return "?tempmute @member [time] [reason]";
       }
 
+      adminOnly(): boolean {
+            return undefined;
+      }
+
+      devOnly(): boolean {
+            return false;
+      }
+
       async runCommand(args: string[], message: Message, client: Client): Promise<void> {
 
             const member = message.mentions.members.first() || await message.guild.members.fetch(args[0]);
