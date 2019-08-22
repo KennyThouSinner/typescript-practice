@@ -27,15 +27,15 @@ export default class ban implements IBotCommand {
 
     async runCommand(args: string[], message: Message, client: Client): Promise<void> {
 
-        const member = await message.guild.members.fetch(message.mentions.members.first() || message.guild.members.get(args[0]));
+        const member = message.mentions.members.first() || await message.guild.members.fetch(args[0]);
         const reason = args.slice(1).join(" ") || "No Reason";
 
-        if (!member) {
+        if (!args[0]) {
             message.channel.send("Please provide a member to ban.")
             return;
         }
 
-        if (!message.guild.members.get(member.id)) {
+        if (!message.guild.members.fetch(args[0])) {
             message.channel.send("That member is not inside of the guild.")
             return;
         }
