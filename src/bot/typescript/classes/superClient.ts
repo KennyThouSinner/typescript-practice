@@ -27,9 +27,7 @@ class superClient extends Client {
         })
 
         this.on("message", message => {
-
-            console.log(message.content);
-
+            
             if (message.author.bot) { return; }
 
             if (message.channel.type === "dm") { return; }
