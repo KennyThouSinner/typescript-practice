@@ -1,4 +1,4 @@
-import * as Discord from "discord.js";
+import { Message, Client } from "discord.js";
 
 export interface IBotCommand {
     [_command: string]: any;
@@ -7,5 +7,5 @@ export interface IBotCommand {
     usage(): string;
     adminOnly(): boolean;
     devOnly(): boolean;
-    runCommand(args: string[], message: Discord.Message, client: Discord.Client): Promise<void>;
+    runCommand(args: string[], message: Message, client: Client): Promise<void>;
 }
