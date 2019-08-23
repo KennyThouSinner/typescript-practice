@@ -28,28 +28,26 @@ export default class help implements IBotCommand {
     }
 
     async runCommand(args: string[], message: Message, client: Client): Promise<void> {
-        
+
         let embed = new MessageEmbed()
-        .setTitle("List of all the commands");
+            .setTitle("List of all the commands");
 
         let sent = (await message.channel.send(embed)) as Message;
-        
+
 
         if (Array.isArray(message)) {
             message = message[0];
         }
 
         let itemHandler = (embed: MessageEmbed, data: Array<IBotCommand>) => {
-            let i = 0;
             data.forEach(item => {
                 embed.addField(`${item._command[0].toUpperCase() + item._command.slice(1)}`, `${item.help()} | Usage: ${item.usage()} || Admin Only: ${item.adminOnly()}`);
             });
-            i++
             return embed;
         }
 
         let handler = new GenericMessageEmbedPageHandler<IBotCommand>(commands, 5, itemHandler, embed, sent)
-        
+
         handler.startCollecting(message.author.id, sent);
     };
 };
