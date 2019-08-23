@@ -8,3 +8,4 @@ src/bot/typescript/configurations.ts
 src/bot/javascript/
 .env
 src/con.js
+src/bot/typescript/custom/arrayresponses.ts
