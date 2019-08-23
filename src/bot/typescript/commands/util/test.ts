@@ -28,13 +28,5 @@ export default class test implements IBotCommand {
 
     async runCommand(args: string[], message: Message, client: Client): Promise<void> {
 
-        const array = ["603096765490790412", "603044257632354307"];
-
-        if(array.some(r => message.member.roles.has(r))) { 
-            console.log("true");
-        } else { 
-            console.log("false");
-        }
-
     };
 };
