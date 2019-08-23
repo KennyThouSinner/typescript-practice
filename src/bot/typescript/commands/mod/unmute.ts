@@ -1,6 +1,7 @@
 import { Message, Client } from "discord.js";
 import { IBotCommand } from "../../api";
 import Mute, { MuteModel } from "../../assets/mongoose/schemas/warns";
+import Roles, { RolesModel } from "../../assets/mongoose/schemas/roles";
 
 export default class unmute implements IBotCommand {
 
@@ -28,11 +29,21 @@ export default class unmute implements IBotCommand {
 
     async runCommand(args: string[], message: Message, client: Client): Promise<void> {
 
-        const member = message.mentions.members.first();
+        const member = message.mentions.members.first() || await message.guild.members.fetch(args[0]);
         const muterole = message.guild.roles.find(role => role.name.toLowerCase() === "muted" || role.name.toLowerCase().includes("muted"))
 
         if (!message.member.permissions.has("MANAGE_ROLES")) {
             message.channel.send("Insufficient Permission.");
+            return;
+        }
+
+        if (!args[0]) {
+            message.channel.send(`Please mention a member or provide a member id.`);
+            return;
+        }
+
+        if (args[0].startsWith("<@") && !message.guild.members.fetch(member.id)) {
+            message.channel.send(`The member was not found inside of the guild.`);
             return;
         }
 
@@ -41,23 +52,20 @@ export default class unmute implements IBotCommand {
             return;
         }
 
-        if (!member) {
-            message.channel.send(`Please mention a member.`);
-            return;
-        }
-
-        if (!message.guild.members.fetch(member.id)) {
-            message.channel.send(`The member was not found inside of the guild.`);
-            return;
-        }
-
         if (!member.roles.has(muterole.id)) {
             message.channel.send("This member is not muted.");
             return;
         }
 
-        if (muterole && member && member.roles.has(muterole.id)) {
-            message.guild.members.fetch(member.id).then(mem => mem.roles.remove(muterole).then(() => message.channel.send(`Successfully unmuted ${mem.displayName}`))).catch(e => console.log(e));
-        }
+        Roles.findOne({
+            guild: message.guild.id,
+            member: member.id
+        }, (err, roles) => {
+            if (err) return console.log(err);
+
+            member.roles.set(roles.roles).then(() => {
+                message.channel.send(`Successfully unmuted **${member.displayName}**.`);
+            });
+        }).catch(e => console.log(e));
     }
 }
