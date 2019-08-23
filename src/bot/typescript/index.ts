@@ -14,12 +14,13 @@ import { superClient } from "./classes/superClient";
 mongoose.connect("mongodb://localhost:27017/typescript", { useNewUrlParser: true });
 
 export const client: Client = new Client();
-export const ClientSuper: superClient = new superClient(client);
 
 export const commands: IBotCommand[] = [];
 
 const guild = new Guild(client, {});
 
-export const member = new Member(ClientSuper, {}, guild);
+export const member = new Member(client, {}, guild);
 
 new loader().loadCmds(`${__dirname}/commands`);
+
+new superClient().Handler();
