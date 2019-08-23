@@ -6,16 +6,15 @@ import Server, { GuildModel } from "../assets/mongoose/schemas/Guild";
 import { handleCommand } from "../custom/handleCommand";
 import * as chalk from "chalk";
 
-class superClient extends Client {
-    
-    constructor(superClient) {
-        super(superClient);
+export class superClient {
 
-        this.on("ready", async () => {
+    Handler() {
 
-            console.log(chalk.default.green(`Logged in as ${this.user.tag}`));
+        client.once("ready", async () => {
 
-            for (const [id, guild] of this.guilds) {
+            console.log(chalk.default.green(`Logged in as ${client.user.tag}`));
+
+            for (const [id, guild] of client.guilds) {
                 const existing = await Server.findOne({ guildID: id });
                 if (!existing) {
                     new Server({
@@ -24,10 +23,10 @@ class superClient extends Client {
                     }).save();
                 }
             }
-        })
+        });
 
-        this.on("message", message => {
-            
+        client.on("message", message => {
+
             if (message.author.bot) { return; }
 
             if (message.channel.type === "dm") { return; }
@@ -75,8 +74,6 @@ class superClient extends Client {
             handleCommand(message);
         });
 
-        this.login(config.token);
-    };
-};
-
-export { superClient };
+        client.login(config.token);
+    }
+}
