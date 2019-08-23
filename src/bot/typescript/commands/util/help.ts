@@ -48,8 +48,8 @@ export default class help implements IBotCommand {
             return embed;
         }
 
-        let handler = new GenericMessageEmbedPageHandler<IBotCommand>(commands, 5, itemHandler, embed, sent as Message)
-
+        let handler = new GenericMessageEmbedPageHandler<IBotCommand>(commands, 5, itemHandler, embed, sent)
+        
         handler.startCollecting(message.author.id, sent);
     };
 };
