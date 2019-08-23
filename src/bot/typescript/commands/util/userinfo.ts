@@ -28,7 +28,8 @@ export default class userinfo implements IBotCommand {
 
       async runCommand(args: string[], message: Message, client: Client): Promise<void> {
 
-            const user = message.mentions.users.first() || await client.users.fetch(args[0]) || message.author;
+            const user = message.author || message.mentions.users.first() || await client.users.fetch(args[0]);
+            
             let status = {
                   "dnd": "Do not Disturb",
                   "idle": "Idle",
