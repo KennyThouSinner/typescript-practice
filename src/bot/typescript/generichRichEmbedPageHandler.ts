@@ -76,7 +76,8 @@ export class GenericMessageEmbedPageHandler<T> {
             this.message.edit(this.embed);
       }
 
-      public async startCollecting(authorId: string, sent: Message, ) {
+      public async startCollecting(authorId: string, sent: Message) {
+
             this.showPage();
 
             await sent.react("◀")
