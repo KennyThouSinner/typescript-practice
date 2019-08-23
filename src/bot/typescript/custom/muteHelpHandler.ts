@@ -20,6 +20,7 @@ class HelpHandler {
 
     /**
      * @example
+     * // Respond to every message who's second argument is equal to 'help'
      * let handler = new HelpHandler(this.message, (user) => user.id === this.message.author.id, this.args)
      * 
      * if (this.args[0].toLowerCase() === "help") {
