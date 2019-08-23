@@ -25,7 +25,6 @@ export class Member extends GuildMember {
 
             return new Promise((res, rej) => {
                   res(member.days);
-                  rej(member.days);
             });
       };
 
@@ -49,7 +48,6 @@ export class Member extends GuildMember {
 
             return new Promise((res, rej) => {
                   res(this);
-                  rej(this);
             });
       }
 };
