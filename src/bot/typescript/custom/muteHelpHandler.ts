@@ -21,7 +21,7 @@ class HelpHandler {
     /**
      * @example
      * // Respond to every message who's second argument is equal to 'help'
-     * if (this.args[0].toLowerCase() === 'help') {
+     * if (this.message.content.split(" ")[1].toLowerCase() === 'help') {
      *   new HelpHandler(this.message, (m) => m.author.id === message.author.id, this.args).Respond();
      *   return;
      * }
