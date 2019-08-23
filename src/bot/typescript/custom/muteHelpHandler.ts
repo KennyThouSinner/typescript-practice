@@ -26,6 +26,7 @@ class HelpHandler {
      *   return;
      * }
      */
+
     public Respond = async () => {
         if (this.args[0].toLowerCase() === "help") {
             if (!this.args[1]) {
