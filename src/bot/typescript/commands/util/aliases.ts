@@ -28,7 +28,7 @@ export default class aliases implements IBotCommand {
 
     async runCommand(args: string[], message: Message, client: Client): Promise<void> {
 
-        const handler =  new HelpHandler(message, args);
+        const handler = new HelpHandler(message, args);
         
         handler.aliasesRespond();
 
