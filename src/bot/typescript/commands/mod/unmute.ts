@@ -8,7 +8,7 @@ export default class unmute implements IBotCommand {
     readonly _commandKeyWords = ["unmute"];
 
     help(): string {
-        return "This command does nothing";
+        return "Unmutes the mentioned member if muted";
     }
 
     isThisCommand(command: Array<string>): boolean {
