@@ -5,7 +5,7 @@ import Roles, { RolesModel } from "../../assets/mongoose/schemas/roles";
 
 export default class unmute implements IBotCommand {
 
-    private readonly _command = "unmute"
+    readonly _command = "unmute"
 
     help(): string {
         return "This command does nothing";

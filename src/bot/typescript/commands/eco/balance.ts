@@ -4,7 +4,7 @@ import Balance, { BalanceModel } from "../../assets/mongoose/schemas/balance";
 
 export default class balance implements IBotCommand {
 
-      private readonly _command = "balance";
+      readonly _command = "balance";
 
       help(): string {
             return "Checks the mentioned member's balance";

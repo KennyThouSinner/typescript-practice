@@ -4,7 +4,7 @@ import { isObject, isString } from "util";
 
 export default class test implements IBotCommand {
 
-    private readonly _command = "test";
+    readonly _command = "test";
 
     help(): string {
         return "This command does nothing";

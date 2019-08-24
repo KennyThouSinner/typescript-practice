@@ -3,7 +3,7 @@ import { IBotCommand } from "../../api";
 
 export default class kick implements IBotCommand {
 
-    private readonly _command = "kick";
+    readonly _command = "kick";
 
     help(): string {
         return "Kicks the mentioned member from the guild";

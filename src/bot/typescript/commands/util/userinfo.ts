@@ -4,7 +4,7 @@ import Guild from "../../assets/mongoose/schemas/Guild";
 
 export default class userinfo implements IBotCommand {
 
-      private readonly _command = "userinfo";
+      readonly _command = "userinfo";
 
       help(): string {
             return "This command does nothing";

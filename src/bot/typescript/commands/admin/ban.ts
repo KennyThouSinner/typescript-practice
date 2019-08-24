@@ -4,7 +4,7 @@ import { parse } from "path";
 
 export default class ban implements IBotCommand {
 
-    private readonly _command = "ban";
+    readonly _command = "ban";
 
     help(): string {
         return "Bans the mentioned member from the guild";

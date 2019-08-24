@@ -5,7 +5,7 @@ import { GenericMessageEmbedPageHandler } from "../../generichRichEmbedPageHandl
 
 export default class help implements IBotCommand {
 
-    private readonly _command = "help";
+    readonly _command = "help";
 
     help(): string {
         return "Brings up the help embed";

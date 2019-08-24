@@ -4,11 +4,11 @@ import Mute, { MuteModel } from "../../assets/mongoose/schemas/warns";
 import { makeid } from "../../gen";
 import punishment, { punishmentModel } from "../../assets/mongoose/schemas/punishments";
 import Roles, { RolesModel } from "../../assets/mongoose/schemas/roles";
-import { HelpHandler } from "../../custom/muteHelpHandler";
+import { HelpHandler } from "../../classes/muteHelpHandler";
 
 export default class mute implements IBotCommand {
 
-    private readonly _command = "mute";
+    readonly _command = "mute";
 
     help(): string {
         return "Mutes the mentioned member";
@@ -47,7 +47,7 @@ export default class mute implements IBotCommand {
             return;
         }
 
-        if(message.content.split(" ")[1].toLowerCase() === "help") {
+        if (message.content.split(" ")[1].toLowerCase() === "help") {
             handler.Respond();
             return;
         }

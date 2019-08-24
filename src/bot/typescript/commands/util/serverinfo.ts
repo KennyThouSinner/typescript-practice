@@ -4,7 +4,7 @@ import { isNull, isNullOrUndefined } from "util";
 
 export default class serverinfo implements IBotCommand {
 
-      private readonly _command = "serverinfo";
+      readonly _command = "serverinfo";
 
       help(): string {
             return "Shows information about the guild";

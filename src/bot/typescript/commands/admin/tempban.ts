@@ -4,7 +4,7 @@ import { Member } from "../../classes/member";
 
 export default class softban implements IBotCommand {
 
-      private readonly _command = "softban";
+      readonly _command = "softban";
 
       help(): string {
             return "This command does nothing";
