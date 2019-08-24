@@ -35,7 +35,7 @@ export default class mute implements IBotCommand {
         let reason;
         const muterole = message.guild.roles.find(role => role.name.toLowerCase() === "muted" || role.name.toLowerCase().includes("mute"))
         const muteEmbed = new MessageEmbed().setFooter(message.guild.me.displayName, client.user.displayAvatarURL());
-        const handler = new HelpHandler(message, (m) => m.author.id === message.author.id, args);
+        const handler = new HelpHandler(message, args);
 
         if (!message.member.permissions.has("MANAGE_MESSAGES")) {
             message.channel.send(`You do not have enough authorization to do this`);
@@ -48,7 +48,7 @@ export default class mute implements IBotCommand {
         }
 
         if (message.content.split(" ")[1].toLowerCase() === "help") {
-            handler.Respond();
+            handler.Respond((m) => m.author.id === message.author.id);
             return;
         }
 
