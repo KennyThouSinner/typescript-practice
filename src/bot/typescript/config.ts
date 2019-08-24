@@ -4,9 +4,9 @@ export let config = {
     token: con.token,
     prefix: "?",
     commands: {
-        admin: ["ban", "kick", "tempban", "massban"],
+        admin: ["ban", "kick", "softban"],
         mod: ["mute", "unmute"],
         eco: ["balance"],
-        util: ["help", "test", "userinfo", "serverinfo"]
+        util: ["aliases", "help", "test", "userinfo", "serverinfo"]
     }
 };
