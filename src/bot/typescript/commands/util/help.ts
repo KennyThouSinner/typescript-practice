@@ -2,6 +2,8 @@ import { Message, Client, MessageEmbed } from "discord.js";
 import { IBotCommand } from "../../api";
 import { commands } from "../../index";
 import { GenericMessageEmbedPageHandler } from "../../generichRichEmbedPageHandler";
+import { responses } from "../../custom/respones";
+import { HelpHandler } from "../../classes/muteHelpHandler";
 
 export default class help implements IBotCommand {
 
@@ -29,25 +31,9 @@ export default class help implements IBotCommand {
 
     async runCommand(args: string[], message: Message, client: Client): Promise<void> {
 
-        let embed = new MessageEmbed()
-            .setTitle("List of all the commands");
+        const handler = new HelpHandler(message, args);
 
-        let sent = (await message.channel.send(embed)) as Message;
-
-
-        if (Array.isArray(message)) {
-            message = message[0];
-        }
-
-        let itemHandler = (embed: MessageEmbed, data: Array<IBotCommand>) => {
-            data.forEach(item => {
-                embed.addField(`${item._commandKeyWords[0][0].toUpperCase() + item._commandKeyWords[0].slice(1)}`, `${item.help()} | Usage: ${item.usage()} || Admin Only: ${item.adminOnly()}`);
-            })
-            return embed;
-        }
-
-        let handler = new GenericMessageEmbedPageHandler<IBotCommand>(commands, 5, itemHandler, embed, sent)
-
-        handler.startCollecting(message.author.id, sent);
+        handler.helpRespond();
+            
     };
 };
