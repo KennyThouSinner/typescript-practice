@@ -10,7 +10,7 @@ export async function handleCommand(message: Message) {
     for (const cmd of commands) {
 
         try {
-            if (!cmd.isThisCommand(command)) {
+            if (!cmd.isThisCommand([command])) {
                 continue;
             }
 
