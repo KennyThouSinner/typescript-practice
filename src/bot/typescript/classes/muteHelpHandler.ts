@@ -84,11 +84,11 @@ class HelpHandler {
 
             return this.message.channel.send(`Command: \`\`${foundCmd._commandKeyWords[0].toUpperCase() + foundCmd._commandKeyWords[0][0].slice(1)}\`\`, \nAliases: \`${foundCmd._commandKeyWords.slice(1).length >= 1 ? foundCmd._commandKeyWords.slice(1) : "No aliases for this command!"}\`, \nUsage: \`\`${foundCmd.usage()}\`\`,
 \n\`Admin Only\`: 
-\`\`\`js \n
+\`\`\`
 ${foundCmd.adminOnly()}
 \`\`\`
 \`Developer Only\`: 
-\`\`\`js \n
+\`\`\`
 ${foundCmd.devOnly()}
 \`\`\` `);
         }
