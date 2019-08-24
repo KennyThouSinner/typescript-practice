@@ -30,11 +30,7 @@ class HelpHandler {
     public Respond = async () => {
         if (this.args[0].toLowerCase() === "help") {
             if (!this.args[1]) {
-                this.message.channel.send(`Hi! Did you mean to do "?mute help"? If you didn"t, please write "no", and if you did, please write one of the following categories:
-\`\`
-missing-permissions\`\`,
-\`\`
-invalid-member\`\` `)
+                this.message.channel.send(responses.initial_response)
                     .then(m => {
                         this.message.channel.awaitMessages(this.filter, { max: 1 })
                             .then(async collected => {
