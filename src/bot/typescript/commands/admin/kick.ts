@@ -3,14 +3,14 @@ import { IBotCommand } from "../../api";
 
 export default class kick implements IBotCommand {
 
-    readonly _command = "kick";
+    readonly _commandKeyWords = ["kick"];
 
     help(): string {
         return "Kicks the mentioned member from the guild";
     }
 
-    isThisCommand(command: string): boolean {
-        return command === this._command;
+    isThisCommand(command: Array<string>): boolean {
+        return this._commandKeyWords.some(arr => command.some(cmd => cmd === arr))
     };
 
     usage(): string {

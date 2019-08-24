@@ -8,14 +8,14 @@ import { HelpHandler } from "../../classes/muteHelpHandler";
 
 export default class mute implements IBotCommand {
 
-    readonly _command = "mute";
+    readonly _commandKeyWords = ["mute", "silence"];
 
     help(): string {
         return "Mutes the mentioned member";
     }
 
-    isThisCommand(command: string): boolean {
-        return command === this._command;
+    isThisCommand(command: Array<string>): boolean {
+        return this._commandKeyWords.some(arr => command.some(cmd => cmd === arr))
     };
 
     usage(): string {

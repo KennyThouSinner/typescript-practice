@@ -4,14 +4,14 @@ import Balance, { BalanceModel } from "../../assets/mongoose/schemas/balance";
 
 export default class balance implements IBotCommand {
 
-      readonly _command = "balance";
+      readonly _commandKeyWords = ["balance", "bal", "money", "account"];
 
       help(): string {
             return "Checks the mentioned member's balance";
       }
 
-      isThisCommand(command: string): boolean {
-            return command === this._command;
+      isThisCommand(command: Array<string>): boolean {
+            return this._commandKeyWords.some(arr => command.some(cmd => cmd === arr))
       };
 
       usage(): string {

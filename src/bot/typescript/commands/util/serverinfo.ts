@@ -4,15 +4,15 @@ import { isNull, isNullOrUndefined } from "util";
 
 export default class serverinfo implements IBotCommand {
 
-      readonly _command = "serverinfo";
+      readonly _commandKeyWords = ["serverinfo", "si", "server"];
 
       help(): string {
             return "Shows information about the guild";
       }
 
-      isThisCommand(command: string): boolean {
-            return command === this._command;
-      }
+      isThisCommand(command: Array<string>): boolean {
+            return this._commandKeyWords.some(arr => command.some(cmd => cmd === arr))
+      };
 
       usage(): string {
             return "?serverinfo";

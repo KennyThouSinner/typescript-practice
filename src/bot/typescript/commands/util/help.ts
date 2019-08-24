@@ -5,14 +5,14 @@ import { GenericMessageEmbedPageHandler } from "../../generichRichEmbedPageHandl
 
 export default class help implements IBotCommand {
 
-    readonly _command = "help";
+    readonly _commandKeyWords = ["help", "commands", "list"];
 
     help(): string {
         return "Brings up the help embed";
     }
 
-    isThisCommand(command: string): boolean {
-        return command === this._command;
+    isThisCommand(command: Array<string>): boolean {
+        return this._commandKeyWords.some(arr => command.some(cmd => cmd === arr))
     };
 
     usage(): string {
@@ -41,8 +41,8 @@ export default class help implements IBotCommand {
 
         let itemHandler = (embed: MessageEmbed, data: Array<IBotCommand>) => {
             data.forEach(item => {
-                embed.addField(`${item._command[0].toUpperCase() + item._command.slice(1)}`, `${item.help()} | Usage: ${item.usage()} || Admin Only: ${item.adminOnly()}`);
-            });
+                embed.addField(`${item._commandKeyWords[0][0].toUpperCase() + item._commandKeyWords[0].slice(1)}`, `${item.help()} | Usage: ${item.usage()} || Admin Only: ${item.adminOnly()}`);
+            })
             return embed;
         }
 

@@ -4,14 +4,14 @@ import { parse } from "path";
 
 export default class ban implements IBotCommand {
 
-    readonly _command = "ban";
+    readonly _commandKeyWords = ["ban"];
 
     help(): string {
         return "Bans the mentioned member from the guild";
     }
 
-    isThisCommand(command: string): boolean {
-        return command === this._command;
+    isThisCommand(command: Array<string>): boolean {
+        return this._commandKeyWords.some(arr => command.some(cmd => cmd === arr))
     };
 
     usage(): string {

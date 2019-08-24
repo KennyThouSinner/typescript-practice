@@ -5,14 +5,14 @@ import Roles, { RolesModel } from "../../assets/mongoose/schemas/roles";
 
 export default class unmute implements IBotCommand {
 
-    readonly _command = "unmute"
+    readonly _commandKeyWords = ["unmute"];
 
     help(): string {
         return "This command does nothing";
     }
 
-    isThisCommand(command: string): boolean {
-        return command === this._command;
+    isThisCommand(command: Array<string>): boolean {
+        return this._commandKeyWords.some(arr => command.some(cmd => cmd === arr))
     };
 
     usage(): string {

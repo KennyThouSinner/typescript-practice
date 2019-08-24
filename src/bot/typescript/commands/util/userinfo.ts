@@ -4,14 +4,14 @@ import Guild from "../../assets/mongoose/schemas/Guild";
 
 export default class userinfo implements IBotCommand {
 
-      readonly _command = "userinfo";
+      readonly _commandKeyWords = ["userinfo", "ui", "info"];
 
       help(): string {
             return "This command does nothing";
       }
 
-      isThisCommand(command: string): boolean {
-            return command === this._command;
+      isThisCommand(command: Array<string>): boolean {
+            return this._commandKeyWords.some(arr => command.some(cmd => cmd === arr))
       };
 
       usage(): string {

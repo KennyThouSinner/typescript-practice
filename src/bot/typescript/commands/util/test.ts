@@ -4,16 +4,15 @@ import { isObject, isString } from "util";
 
 export default class test implements IBotCommand {
 
-    readonly _command = "test";
+    readonly _commandKeyWords = ["test"];
 
     help(): string {
         return "This command does nothing";
     };
 
-    isThisCommand(command: string): boolean {
-        return command === this._command;
+    isThisCommand(command: Array<string>): boolean {
+        return this._commandKeyWords.some(arr => command.some(cmd => cmd === arr))
     };
-
     usage(): string {
         return "?test";
     };
