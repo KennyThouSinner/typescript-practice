@@ -1,9 +1,9 @@
 import { Message, Client } from "discord.js";
 
 export interface IBotCommand {
-    _command: string;
+    _commandKeyWords: Array<string>;
     help(): string;
-    isThisCommand(command: string): boolean;
+    isThisCommand(command: Array<string>): boolean;
     usage(): string;
     adminOnly(): boolean;
     devOnly(): boolean;
