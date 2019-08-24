@@ -1,5 +1,5 @@
 import { Message, CollectorFilter } from "discord.js";
-import { responses } from "./respones";
+import { responses } from "../custom/respones";
 
 class HelpHandler {
     message: Message;
