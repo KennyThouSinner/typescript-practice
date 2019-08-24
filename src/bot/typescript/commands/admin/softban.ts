@@ -7,7 +7,7 @@ export default class softban implements IBotCommand {
       readonly _commandKeyWords = ["softban"];
 
       help(): string {
-            return "This command does nothing";
+            return "Softbans the mentioned member";
       };
 
       isThisCommand(command: Array<string>): boolean {
