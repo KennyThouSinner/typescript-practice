@@ -1,6 +1,7 @@
 import { Message, Client, MessageEmbed, DiscordAPIError } from "discord.js";
 import { IBotCommand } from "../../api";
 import { commands } from "../../index";
+import { HelpHandler } from "../../classes/muteHelpHandler";
 
 export default class aliases implements IBotCommand {
 
@@ -27,19 +28,9 @@ export default class aliases implements IBotCommand {
 
     async runCommand(args: string[], message: Message, client: Client): Promise<void> {
 
-        const embed = new MessageEmbed().setTimestamp();
-        const foundCmd = commands.find(arr => arr._commandKeyWords.some(keyword => keyword.toLowerCase() === args[0]));
-
-        if (foundCmd) {
-            embed
-                .setTitle(`Aliases for \`\`${foundCmd._commandKeyWords[0]}\`\` `)
-            !(foundCmd._commandKeyWords.slice(1).length <= 0) ? embed.addField(`Aliases:`, ` \`\`${foundCmd._commandKeyWords.slice(1).join('\n')}\`\` `) : embed.addField("Aliases: ", "No aliases for this command!")
-            message.channel.send(embed);
-            return;
-        } else {
-            message.channel.send(`I couldn't find that command, sorry!`);
-            return;
-        }
+        const handler =  new HelpHandler(message, args);
+        
+        handler.aliasesRespond();
 
     };
 };
