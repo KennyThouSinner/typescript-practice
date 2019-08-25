@@ -101,20 +101,23 @@ ${foundCmd.devOnly()}
         const foundAlias = commands.find(arr => arr._commandKeyWords.slice(1).some(keyword => keyword.toLowerCase() === this.args[0].toLowerCase()))
 
         if (foundCmd) {
+
             embed
                 .setTitle(`Aliases for \`\`${foundCmd._commandKeyWords[0]}\`\` `)
             !(foundCmd._commandKeyWords.slice(1).length <= 0) ? embed.addField(`Aliases:`, ` \`\`${foundCmd._commandKeyWords.slice(1).join('\n')}\`\` `) : embed.addField("Aliases: ", "No aliases for this command!")
             this.message.channel.send(embed);
             return;
+
         } else if (foundAlias) {
 
             this.message.channel.send(`I didn't find the original command name, but I found it's alias... \nOriginal Command Name: \n**\`\`${foundAlias._commandKeyWords[0]}\`\`** \nIt's aliases: \n\`\`${foundAlias._commandKeyWords.slice(1).join("\n")}\`\` `)
-
             return;
+
         } else if (!foundCmd && !foundAlias) {
 
             this.message.channel.send(`I couldn't find that command, sorry!`);
             return;
+
         }
     }
 }
