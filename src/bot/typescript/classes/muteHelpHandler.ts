@@ -80,15 +80,15 @@ class HelpHandler {
             return handler.startCollecting(this.message.author.id, sent);
 
         } else {
-            const foundCmd = commands.find(arr => arr._commandKeyWords[0].toLowerCase() === this.message.content.split(" ").slice(1)[0].toLowerCase());
-
-            return this.message.channel.send(`Command: \`\`${foundCmd._commandKeyWords[0].toUpperCase() + foundCmd._commandKeyWords[0][0].slice(1)}\`\`, \nAliases: \`${foundCmd._commandKeyWords.slice(1).length >= 1 ? foundCmd._commandKeyWords.slice(1) : "No aliases for this command!"}\`, \nUsage: \`\`${foundCmd.usage()}\`\`,
+            const foundCmd = commands.find(arr => arr._commandKeyWords[0].toLowerCase() === this.message.content.split(" ").slice(1)[0].toLowerCase()) || commands.find(arr => arr._commandKeyWords.slice(1).some(r => r.toLowerCase() === this.message.content.split(" ").slice(1)[0].toLowerCase()));
+            if (!foundCmd) return this.message.channel.send("I couldn't find that command, sorry!");
+            else return this.message.channel.send(`Command: \`\`${foundCmd._commandKeyWords[0].toUpperCase() + foundCmd._commandKeyWords[0][0].slice(1)}\`\`, \nAliases: ${foundCmd._commandKeyWords.slice(1).length >= 1 ? foundCmd._commandKeyWords.slice(1).map(x => ` \`\`${x}\`\``).join(',') : "No aliases for this command!"}, \nUsage: \`\`${foundCmd.usage()}\`\`,
 \n\`Admin Only\`: 
-\`\`\`
+\`\`\`js
 ${foundCmd.adminOnly()}
 \`\`\`
 \`Developer Only\`: 
-\`\`\`
+\`\`\`js
 ${foundCmd.devOnly()}
 \`\`\` `);
         }
