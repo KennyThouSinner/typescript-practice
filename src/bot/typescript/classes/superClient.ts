@@ -1,7 +1,6 @@
-import { Client } from "discord.js";
+import { Client, Message } from "discord.js";
 import { client, commands } from "../index";
 import { config } from "../config";
-import Balance, { BalanceModel } from "../assets/mongoose/schemas/balance";
 import Server, { GuildModel } from "../assets/mongoose/schemas/Guild";
 import { handleCommand } from "../custom/handleCommand";
 import * as chalk from "chalk";
@@ -49,27 +48,7 @@ export class superClient {
                     }
                 }
 
-                const moneyToGive = Math.floor(Math.random() * 100);
-                Balance.findOne({
-                    guildID: message.guild.id,
-                    userID: message.member.id
-                }, (err, bal) => {
-                    if (err) return console.error(err);
-
-                    if (message.content.split(" ").slice(1).length <= 0) { return; }
-
-                    if (!bal) {
-                        return new Balance({
-                            guildID: message.guild.id,
-                            userID: message.member.id,
-                            balance: moneyToGive
-                        }).save().catch(e => console.log(e));
-                    } else {
-                        bal.balance += moneyToGive
-                        bal.save().catch(e => console.log(e));
-                    }
-                    if (!message.content.toLowerCase().startsWith(conf.prefix) || message.content.slice(conf.prefix.length).length <= 0) { return; }
-                });
+                if (!message.content.toLowerCase().startsWith(conf.prefix) || message.content.slice(conf.prefix.length).length <= 0) { return; }
             });
             handleCommand(message);
         });
