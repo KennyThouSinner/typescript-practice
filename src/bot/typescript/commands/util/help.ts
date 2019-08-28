@@ -3,7 +3,7 @@ import { IBotCommand } from "../../api";
 import { commands } from "../../index";
 import { GenericMessageEmbedPageHandler } from "../../generichRichEmbedPageHandler";
 import { responses } from "../../custom/respones";
-import { HelpHandler } from "../../classes/muteHelpHandler";
+import { HelpHandler } from "../../classes/handlers";
 
 export default class help implements IBotCommand {
 

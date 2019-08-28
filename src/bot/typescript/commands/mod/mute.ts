@@ -4,7 +4,7 @@ import Mute, { MuteModel } from "../../assets/mongoose/schemas/warns";
 import { makeid } from "../../gen";
 import punishment, { punishmentModel } from "../../assets/mongoose/schemas/punishments";
 import Roles, { RolesModel } from "../../assets/mongoose/schemas/roles";
-import { HelpHandler } from "../../classes/muteHelpHandler";
+import { HelpHandler } from "../../classes/handlers";
 
 export default class mute implements IBotCommand {
 
@@ -38,7 +38,7 @@ export default class mute implements IBotCommand {
         const handler = new HelpHandler(message, args);
 
         if (!message.member.permissions.has("MANAGE_MESSAGES")) {
-            message.channel.send(`You do not have enough authorization to do this`);
+            message.reply('you do not have the sufficient permission to execute this action');
             return;
         }
 
@@ -63,6 +63,11 @@ export default class mute implements IBotCommand {
         }
 
         const member = message.mentions.members.first() || await message.guild.members.fetch(args[0]);
+
+        if(member.id === message.member.id) {
+            message.reply('you can\'t mute yourself, silly!');
+            return;
+        }
 
         if (member.roles.has(muterole.id)) {
             message.channel.send(`This member is already muted.`);
