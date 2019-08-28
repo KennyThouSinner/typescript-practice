@@ -1,7 +1,7 @@
 import { Message, Client, MessageEmbed, DiscordAPIError } from "discord.js";
 import { IBotCommand } from "../../api";
 import { commands } from "../../index";
-import { HelpHandler } from "../../classes/muteHelpHandler";
+import { HelpHandler } from "../../classes/handlers";
 
 export default class aliases implements IBotCommand {
 
