@@ -5,7 +5,7 @@ export let config = {
     prefix: "?",
     commands: {
         admin: ["ban", "kick", "softban"],
-        mod: ["mute", "unmute"],
+        mod: ["mute", "unmute", "purge"],
         eco: ["balance"],
         util: ["aliases", "help", "test", "userinfo", "serverinfo"]
     }
