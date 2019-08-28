@@ -30,7 +30,12 @@ export default class kick implements IBotCommand {
         const member = await message.guild.members.fetch(message.mentions.members.first() || message.guild.members.get(args[0]));
         const reason = args.slice(1).join(" ") || "No Reason";
 
-        if (!member) {
+        if (!message.member.permissions.has("KICK_MEMBERS")) {
+            message.reply('you do not have the sufficient permission to execute this action');
+            return;
+        }
+
+        if (!args[0]) {
             message.channel.send("Please mention a member to kick");
             return;
         }
