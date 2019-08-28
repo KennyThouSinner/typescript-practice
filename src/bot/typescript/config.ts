@@ -7,6 +7,6 @@ export let config = {
         admin: ["ban", "kick", "softban"],
         mod: ["mute", "unmute", "purge"],
         eco: ["balance"],
-        util: ["aliases", "help", "test", "userinfo", "serverinfo"]
+        util: ["aliases", "help", "userinfo", "serverinfo"]
     }
 };
