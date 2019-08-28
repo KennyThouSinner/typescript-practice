@@ -1,6 +1,7 @@
-import { Message, Client, MessageEmbed } from "discord.js";
+import { Message, Client, MessageEmbed, GuildMember } from "discord.js";
 import { IBotCommand } from "../../api";
 import { parse } from "path";
+import { Collection } from "mongoose";
 
 export default class ban implements IBotCommand {
 
@@ -35,6 +36,11 @@ export default class ban implements IBotCommand {
         : member = await message.guild.members.fetch(args[0]);
         
         const reason = args.slice(1).join(" ") || "No Reason";
+
+        if (!message.member.permissions.has("BAN_MEMBERS")) {
+            message.reply('you do not have the sufficient permission to execute this action');
+            return;
+        }
 
         if (!args[0]) {
             message.channel.send("Please provide a member to ban");
