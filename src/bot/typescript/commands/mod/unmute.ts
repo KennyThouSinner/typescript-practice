@@ -32,8 +32,8 @@ export default class unmute implements IBotCommand {
         const member = message.mentions.members.first() || await message.guild.members.fetch(args[0]);
         const muterole = message.guild.roles.find(role => role.name.toLowerCase() === "muted" || role.name.toLowerCase().includes("muted"))
 
-        if (!message.member.permissions.has("MANAGE_ROLES")) {
-            message.channel.send("Insufficient Permission.");
+        if (!message.member.permissions.has("MANAGE_MESSAGES")) {
+            message.reply('you do not have the sufficient permission to execute this action');
             return;
         }
 
